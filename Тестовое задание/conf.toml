@@ -1,0 +1,4 @@
+[test_sms_sender]
+server_url = 'http://localhost:4010'
+user = 'admin'
+password = 'admin'
