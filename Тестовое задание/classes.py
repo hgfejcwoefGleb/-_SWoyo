@@ -192,7 +192,6 @@ class HttpResponse:
                     headers[header] = http_parts[i].split(":")[-1][1:]
                 elif i == 0:
                     start_str: list[str] = http_parts[i].split()
-                    # print(f"{start_str} is start_str\n")
                     answer_code = start_str[1] + " " + start_str[2]
                     protocol = start_str[0]
                 elif part == "":

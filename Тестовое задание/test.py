@@ -195,7 +195,7 @@ def test_make_request_to_serv_success(mock_get_script_args, mock_socket):
         b'{"status": "success", "message_id": "12345"}'
     )
     with patch("logging.info") as mock_logging:
-        make_request_to_serv("localhost", 4010)
+        make_request_to_serv()
         mock_logging.assert_called_with("Server response: %s", "200 OK")
 
 
@@ -208,7 +208,7 @@ def test_make_request_to_serv_connection_refused(mock_get_script_args, mock_sock
     )
     mock_socket.return_value.connect.side_effect = ConnectionRefusedError
     with patch("logging.error") as mock_logging:
-        make_request_to_serv("localhost", 4010)
+        make_request_to_serv()
         mock_logging.assert_called_with(
             "Error: The connection was not established because the server rejected the request"
         )

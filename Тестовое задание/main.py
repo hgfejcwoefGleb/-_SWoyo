@@ -12,7 +12,7 @@ import take_config as conf
 from classes import HttpResponse, HttpRequest
 
 
-def make_request_to_serv(server_name: str, port: int) -> None:
+def make_request_to_serv() -> None:
     """
     Функция выполняет подключение, запрос к серверу, а также логирует резултат
     В конце функкции выводится код ответа и текста ответа сервера
@@ -53,18 +53,15 @@ def make_request_to_serv(server_name: str, port: int) -> None:
             "HTTP/1.1",
             "application/json",
         )
+        server_name: str = config["test_sms_sender"]["server_url"].split(':')[1][2:]
+        port: int = int(config["test_sms_sender"]["server_url"].split(':')[2])
         res: bytes = http_req.to_bytes()
         sock = socket.socket()
         sock.connect((server_name, port))
         sock.send(res)
         data: bytes = sock.recv(1024)
         sock.close()
-        # new_http_req = HttpRequest.from_bytes(res)
-        # new_res = new_http_req.to_bytes()
-        # print(new_res)
-        # print(data.decode().split('\r\n'))
         https_resp: HttpResponse = HttpResponse.from_bytes(data)
-        # resp = https_resp.to_bytes()
         logging.info("Server response: %s", https_resp.answer_code)
         print(https_resp.answer_code)
     except ConnectionRefusedError:
@@ -74,9 +71,9 @@ def make_request_to_serv(server_name: str, port: int) -> None:
         print(
             "Error: The connection was not established because the server rejected the request"
         )
-    # except Exception as e:
-    # print(f"Найдена ошибка: {e}")
+    except Exception as e:
+        print(f"Найдена ошибка: {e}")
 
 
 if __name__ == "__main__":
-    make_request_to_serv("localhost", 4010)
+    make_request_to_serv()
